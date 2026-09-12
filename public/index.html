@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Timetable Manager</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>College Timetable Manager</h1>
+    <div id="banner" class="banner"></div>
+  </header>
+
+  <main>
+    <section class="panel" id="weekPanel">
+      <h2>Week</h2>
+      <div class="row">
+        <label>Week start date
+          <input type="date" id="weekDate" />
+        </label>
+        <button id="createWeekBtn" class="primary">Create Week</button>
+      </div>
+      <div class="row">
+        <label>Select week
+          <select id="weekSelect"></select>
+        </label>
+        <button id="refreshBtn">Refresh</button>
+      </div>
+      <div id="weekStatus" class="muted"></div>
+    </section>
+
+    <section class="panel" id="uploadPanel" hidden>
+      <h2>Upload weekly inputs</h2>
+      <div class="row">
+        <label>College Schedule (from <code>templates/college_schedule_template.xlsx</code>)
+          <input type="file" id="collegeFile" accept=".xlsx" />
+        </label>
+      </div>
+      <div class="row">
+        <label>Staff Requests (from <code>templates/staff_requests_template.xlsx</code>)
+          <input type="file" id="staffFile" accept=".xlsx" />
+        </label>
+      </div>
+      <div class="row">
+        <button id="uploadBtn" class="primary">Upload</button>
+        <button id="clearFileBtn">Clear files</button>
+      </div>
+      <div id="uploadStatus" class="muted"></div>
+    </section>
+
+    <section class="panel" id="actionPanel" hidden>
+      <h2>Actions</h2>
+      <div class="row">
+        <button id="generateBtn" class="primary">Generate Timetable</button>
+        <button id="lockBtn" class="danger">Lock Week</button>
+        <span class="sep"></span>
+        <button id="pdfBtn">Download PDF</button>
+        <button id="excelBtn">Download Excel</button>
+        <button id="printBtn">Print</button>
+      </div>
+    </section>
+
+    <section class="panel" id="gridPanel" hidden>
+      <h2>Timetable</h2>
+      <div class="scrollwrap" id="gridWrap"></div>
+    </section>
+
+    <section class="panel" id="unresolvedPanel" hidden>
+      <h2>Unresolved requests</h2>
+      <ul id="unresolvedList"></ul>
+    </section>
+
+    <section class="panel" id="hoursPanel" hidden>
+      <h2>Staff weekly hours</h2>
+      <div class="scrollwrap">
+        <table id="hoursTable">
+          <thead>
+            <tr>
+              <th>Staff</th>
+              <th>Department</th>
+              <th>Subject</th>
+              <th>Type</th>
+              <th>Classes/wk</th>
+              <th>Duration</th>
+              <th>Pattern</th>
+              <th>Preferred day</th>
+              <th>Required hrs</th>
+              <th>Booked hrs</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="hoursBody"></tbody>
+        </table>
+      </div>
+      <div id="hoursStatus" class="muted"></div>
+      <p class="note" id="hoursNote"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Backendless-friendly: runs with an Express server + Supabase. Inputs &amp; exports are Excel files.</p>
+  </footer>
+
+  <script src="/vendor/xlsx.full.min.js"></script>
+  <script src="/vendor/jspdf.umd.min.js"></script>
+  <script src="/vendor/jspdf.plugin.autotable.min.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

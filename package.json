@@ -1,0 +1,20 @@
+{
+  "name": "timetable-manager",
+  "version": "1.0.0",
+  "description": "College weekly timetable generator - Express frontend, Supabase backend, Excel-driven inputs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "better-sqlite3": "^13.0.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "multer": "^2.0.1",
+    "xlsx": "^0.18.5"
+  }
+}
