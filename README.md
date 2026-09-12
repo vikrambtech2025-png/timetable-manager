@@ -288,6 +288,65 @@ node tests/e2e.js     # full HTTP workflow: create → upload → generate → e
 
 ---
 
+## 🚀 Deploy
+
+The project ships first-class config for Docker-based hosts and the two most popular PaaS
+providers — **Railway** and **Render**. Because everything is already committed to GitHub, you can
+deploy in a few clicks without touching a terminal.
+
+### Choose your storage mode first
+
+| Mode | Env vars to set on the host | Persistence |
+| --- | --- | --- |
+| **SQLite (local)** | `SQLITE_PATH=/data/timetable.db` | Needs a persistent volume/disk mounted at `/data` |
+| **Supabase (cloud)** | `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` | Managed Postgres — no disk needed |
+
+> `render.yaml` mounts a disk at `/data` automatically. On Railway, add a **Volume** mounted at
+> `/data`, or set the Supabase vars instead.
+
+### Option A — Railway (recommended)
+
+1. Log in to <https://railway.app>, click **New Project → Deploy from GitHub repo**.
+   The `railway.json` + `Dockerfile` are auto-detected — nothing to configure.
+2. Add **Variables**: either `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`, or
+   `SQLITE_PATH=/data/timetable.db` **plus** a Volume mounted at `/data`.
+3. Hit deploy. Health check hits `/api/health` automatically.
+
+CLI alternative:
+```sh
+railway login        # opens your browser once
+railway init         # link or create a project
+railway up           # build and deploy from the Dockerfile
+```
+
+### Option B — Render
+
+1. On <https://render.com>, choose **New → Blueprint** and pick this GitHub repo.
+   The `render.yaml` blueprint creates a Docker web service, health check, and disk automatically.
+2. If using Supabase, add `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` in the service → Environment.
+
+### Option C — Any Docker host (VPS / Fly.io / DigitalOcean)
+
+```sh
+docker compose up -d      # or push the image to your registry and run it
+```
+
+Deployment files included:
+
+| File | Purpose |
+| --- | --- |
+| `Dockerfile` | Multi-stage build (compiles `better-sqlite3`, slim runtime) |
+| `docker-compose.yml` | Local/any-host run with persistent `./data` volume |
+| `railway.json` | Railway build + healthcheck config |
+| `render.yaml` | Render blueprint (web service + auto-provisioned disk) |
+| `Procfile` | `web: node server.js` for platforms using it |
+
+> **Why not Vercel?** Vercel is serverless and read-only: `multer` file uploads and the SQLite
+> backend don't fit its model (a Supabase-only variant would work but needs code changes). For a
+> long-running Express service with file uploads, Railway/Render/Docker are the right fit.
+
+---
+
 ## 📄 License
 
 [MIT](./LICENSE)

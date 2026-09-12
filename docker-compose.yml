@@ -1,0 +1,13 @@
+services:
+  timetable:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - SQLITE_PATH=/data/timetable.db
+      # Enable Supabase mode instead of local SQLite by passing these:
+      # - SUPABASE_URL=https://xxxx.supabase.co
+      # - SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+    volumes:
+      - ./data:/data
